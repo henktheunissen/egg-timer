@@ -16,7 +16,7 @@
     <h1 class="title">Egg timer 🐔</h1>
 
     <div class="egg">
-        <h1 class="time" id="time">0:00</h1>
+        <h1 class="time" id="clockdiv">0:00</h1>
         <img class="image" src="https://i.dlpng.com/static/png/338348_preview.png" width="200px">
     </div>
 
@@ -97,45 +97,79 @@
     <?php
     switch ([$size, $type]) {
         case ['small', 'soft']:
-            $cooktime = 60*3;
-            echo $cooktime;
+            $cooktime = 3;
+            // $cooktime = 0.1;
+            // echo $cooktime;
         break;
         case ['small', 'medium'];
-            $cooktime = 60*5.5;
-            echo $cooktime;
+            $cooktime = 5.5;
+            // echo $cooktime;
         break;
         case ['small', 'hard'];
-            $cooktime = 60*7;
-            echo $cooktime;
+            $cooktime = 7;
+            // echo $cooktime;
         break;
         case ['medium', 'soft'];
-            $cooktime = 60*3.5;
-            echo $cooktime;
+            $cooktime = 3.5;
+            // echo $cooktime;
         break;
         case ['medium', 'medium'];
-            $cooktime = 60*6.5;
-            echo $cooktime;
+            $cooktime = 6.5;
+            // echo $cooktime;
         break;
         case ['medium', 'hard'];
-            $cooktime = 60*8;
-            echo $cooktime;
+            $cooktime = 8;
+            // echo $cooktime;
         break;
         case ['large', 'soft'];
-            $cooktime = 60*4;
-            echo $cooktime;
+            $cooktime = 4;
+            // echo $cooktime;
         break;
         case ['large', 'medium'];
-            $cooktime = 60*7.5;
-            echo $cooktime;
+            $cooktime = 7.5;
+            // echo $cooktime;
         break;
         case ['large', 'hard'];
-            $cooktime = 60*9;
-            echo $cooktime;
+            $cooktime = 9;
+            // echo $cooktime;
         break;
     }
     ?>
 
 </div>
+
+
+<script type="text/javascript">
+var time_in_minutes = <?php echo $cooktime; ?>;
+var current_time = Date.parse(new Date());
+var deadline = new Date(current_time + time_in_minutes*60*1000);
+
+function time_remaining(endtime){
+	var t = Date.parse(endtime) - Date.parse(new Date());
+	var seconds = Math.floor( (t/1000) % 60 );
+	var minutes = Math.floor( (t/1000/60) % 60 );
+	var hours = Math.floor( (t/(1000*60*60)) % 24 );
+	var days = Math.floor( t/(1000*60*60*24) );
+	return {'total':t, 'days':days, 'hours':hours, 'minutes':minutes, 'seconds':seconds};
+}
+
+function run_clock(id,endtime){
+	var clock = document.getElementById(id);
+	function update_clock(){
+		var t = time_remaining(endtime);
+		clock.innerHTML = t.minutes+':'+t.seconds;
+		if(t.total<=0){ 
+            clearInterval(timeinterval); 
+            document.getElementById("clockdiv").classList.add("timerstop");
+            new Audio('/alarm1.mp3').play()
+        }
+	}
+	update_clock(); // run function once at first to avoid delay
+	var timeinterval = setInterval(update_clock,1000);
+}
+
+run_clock('clockdiv',deadline);
+</script>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
