@@ -17,7 +17,7 @@
 
     <div class="egg">
         <h1 class="time" id="clockdiv">0:00</h1>
-        <img class="image" src="https://i.dlpng.com/static/png/338348_preview.png" width="200px">
+        <img class="image" id="eggimage" src="https://i.dlpng.com/static/png/338348_preview.png" width="200px">
     </div>
 
     <?php
@@ -161,6 +161,7 @@ function run_clock(id,endtime){
 		if(t.total<=0){ 
             clearInterval(timeinterval); 
             document.getElementById("clockdiv").classList.add("timerstop");
+            document.getElementById("eggimage").classList.add("eggimage");
             new Audio('/alarm1.mp3').play()
         }
 	}
